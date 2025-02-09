@@ -9,4 +9,7 @@ export default defineConfig({
     TanStackRouterVite({ autoCodeSplitting: true }),
     viteReact(),
   ],
+  server: {
+    port: 2003,
+  },
 });
