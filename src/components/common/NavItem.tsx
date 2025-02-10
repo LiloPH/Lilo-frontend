@@ -12,6 +12,8 @@ const NavItem = ({ to, icon, label, isExpanded }: NavItemProps) => {
   return (
     <Link
       to={to}
+      activeProps={{ className: "bg-yellow-100 border-l-4 border-yellow-400" }}
+      activeOptions={{ exact: true }}
       className={`group relative flex items-center gap-4 p-2 hover:bg-gray-100 rounded-md ${
         !isExpanded ? "justify-center" : ""
       }`}
