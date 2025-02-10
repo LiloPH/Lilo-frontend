@@ -1,6 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -12,8 +13,12 @@ function Index() {
     onSuccess: (response) => {
       console.log("Server Auth Code:", response.code);
     },
-    onError: () => {
-      console.log("Login failed");
+    onError: (error) => {
+      toast.error(`Login failed: ${error?.error}`, {
+        position: "top-center",
+        pauseOnHover: false,
+      });
+      console.log(error);
     },
   });
 

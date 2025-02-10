@@ -12,11 +12,16 @@ const RootComponent = () => {
   const isMobile = useSidebarStore((state) => state.isMobile);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
+  const pathname = window.location.pathname;
+  const isDashboard =
+    pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+
   return (
     <>
-      {!isMobile && isAuthenticated && <SideBar />}
+      {!isMobile && isAuthenticated && isDashboard && <SideBar />}
+      {isMobile && isAuthenticated && isDashboard && <SideBar isMobile />}
 
-      {isMobile && (
+      {isMobile && isAuthenticated && isDashboard && (
         <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b z-10 px-4">
           <div className="h-full flex flex-row items-center justify-between">
             <img src={logoFull} alt="Logo" className="h-8" />
@@ -31,8 +36,6 @@ const RootComponent = () => {
           </div>
         </div>
       )}
-
-      {isMobile && isAuthenticated && <SideBar isMobile />}
 
       <main className={`flex-1 overflow-auto ${isMobile ? "mt-16" : ""}`}>
         <div className="container mx-auto p-4">
