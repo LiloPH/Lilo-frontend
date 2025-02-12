@@ -11,7 +11,7 @@ function Index() {
   const login = useGoogleLogin({
     flow: "auth-code",
     onSuccess: (response) => {
-      console.log("Server Auth Code:", response.code);
+      console.log("Server Auth Code:", response);
     },
     onError: (error) => {
       toast.error(`Login failed: ${error?.error}`, {

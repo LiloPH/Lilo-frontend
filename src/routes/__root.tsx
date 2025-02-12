@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import SideBar from "../components/common/SideBar";
 import { HiMenu } from "react-icons/hi";
@@ -6,6 +6,11 @@ import "../index.css";
 import logoFull from "../assets/Lilo.png";
 import { useSidebarStore } from "../store/sidebarStore";
 import { useAuthStore } from "../store/authStore";
+import "../api/axios";
+
+type RouterContext = {
+  isAuthenticated: boolean;
+};
 
 const RootComponent = () => {
   const toggleMobile = useSidebarStore((state) => state.toggleMobile);
@@ -48,6 +53,6 @@ const RootComponent = () => {
   );
 };
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
 });

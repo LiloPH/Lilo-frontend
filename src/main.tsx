@@ -3,10 +3,12 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
+import { useAuthStore } from "./store/authStore";
 
 import { routeTree } from "./routeTree.gen";
+const isAuthenticated = useAuthStore.getState().isAuthenticated;
 
-const router = createRouter({ routeTree });
+const router = createRouter({ routeTree, context: { isAuthenticated } });
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -20,7 +22,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} context={{ isAuthenticated }} />
         <ToastContainer
           position="bottom-right"
           autoClose={5000}

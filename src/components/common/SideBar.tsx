@@ -25,7 +25,7 @@ const SideBar = ({ isMobile }: SideBarProps) => {
   ];
 
   const sidebarClass = isMobile
-    ? `fixed top-0 left-0 h-full w-64 bg-white transform transition-transform duration-200 ease-in-out ${
+    ? `fixed top-0 left-0 h-full w-full bg-white transform transition-transform duration-200 ease-in-out ${
         isMobileOpen ? "translate-x-0" : "-translate-x-full"
       } z-50`
     : `${
