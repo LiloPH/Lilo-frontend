@@ -4,9 +4,14 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import { useAuthStore } from "./store/authStore";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import "./api/axios";
 
 import { routeTree } from "./routeTree.gen";
 const isAuthenticated = useAuthStore.getState().isAuthenticated;
+
+const queryClient = new QueryClient();
 
 const router = createRouter({ routeTree, context: { isAuthenticated } });
 
@@ -21,19 +26,21 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
-        <RouterProvider router={router} context={{ isAuthenticated }} />
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-      </GoogleOAuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
+          <RouterProvider router={router} context={{ isAuthenticated }} />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+        </GoogleOAuthProvider>
+      </QueryClientProvider>
     </StrictMode>
   );
 }

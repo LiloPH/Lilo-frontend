@@ -1,24 +1,28 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
-
-export const Route = createLazyFileRoute("/")({
+import { useAuthStore } from "../store/authStore";
+export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const login = useGoogleLogin({
+  const router = useRouter();
+  const { loginWithGoogle } = useAuthStore();
+  const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
-    onSuccess: (response) => {
-      console.log("Server Auth Code:", response);
+    onSuccess: async (response) => {
+      await loginWithGoogle(response.code, () =>
+        router.navigate({ to: "/dashboard" })
+      );
     },
     onError: (error) => {
-      toast.error(`Login failed: ${error?.error}`, {
+      toast.error(`Login failed: ${error?.error ?? "Unknown error"}`, {
         position: "top-center",
         pauseOnHover: false,
       });
-      console.log(error);
+      console.error("Google login error:", error);
     },
   });
 
@@ -31,7 +35,7 @@ function Index() {
         </div>
         <div className="mt-8">
           <button
-            onClick={() => login()}
+            onClick={() => handleGoogleLogin()}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
           >
             <FcGoogle className="h-5 w-5" />
