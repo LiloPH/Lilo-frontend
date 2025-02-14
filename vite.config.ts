@@ -12,4 +12,9 @@ export default defineConfig({
   server: {
     port: 2003,
   },
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
 });

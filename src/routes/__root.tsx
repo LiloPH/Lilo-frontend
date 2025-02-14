@@ -16,7 +16,7 @@ const RootComponent = () => {
           <Outlet />
         </div>
       </main>
-      <TanStackRouterDevtools />
+      <TanStackRouterDevtools initialIsOpen={false} />
     </>
   );
 };

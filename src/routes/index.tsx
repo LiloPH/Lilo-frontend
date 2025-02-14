@@ -3,6 +3,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../store/authStore";
+import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   component: Index,
 });
@@ -41,6 +42,10 @@ function Index() {
             <FcGoogle className="h-5 w-5" />
             <span>Continue with Google</span>
           </button>
+          <Button>
+            <FcGoogle className="h-5 w-5" />
+            Continue with Google
+          </Button>
         </div>
       </div>
     </div>
