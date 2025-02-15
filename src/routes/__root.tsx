@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import SideBar from "../components/common/SideBar";
 import "../index.css";
-
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import SideBar from "@/components/common/SideBar";
 type RouterContext = {
   isAuthenticated: boolean;
 };
@@ -10,13 +11,14 @@ type RouterContext = {
 const RootComponent = () => {
   return (
     <>
-      <SideBar />
-      <main className="flex-1 overflow-auto">
-        <div className="container mx-auto p-4">
+      <SidebarProvider>
+        <SideBar />
+        <main className="flex-1 overflow-auto p-4">
+          <SidebarTrigger />
           <Outlet />
-        </div>
-      </main>
-      <TanStackRouterDevtools initialIsOpen={false} />
+        </main>
+        {/* <TanStackRouterDevtools initialIsOpen={false} /> */}
+      </SidebarProvider>
     </>
   );
 };

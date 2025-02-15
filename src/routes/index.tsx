@@ -3,7 +3,16 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../store/authStore";
-import { Button } from "@/components/ui/button";
+import { Button2 } from "@/components/ui/button2";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import logo from "@/assets/icon.png";
+
 export const Route = createFileRoute("/")({
   component: Index,
 });
@@ -28,26 +37,29 @@ function Index() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">Welcome</h2>
-          <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
-        </div>
-        <div className="mt-8">
-          <button
-            onClick={() => handleGoogleLogin()}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+    <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+      <Card className="max-w-md w-full shadow-2xl border-gray-300 bg-white">
+        <CardHeader className="text-center space-y-1">
+          <center>
+            <img src={logo} alt="logo" className=" w-10 h-10" />
+          </center>
+          <CardTitle className="text-2xl font-bold">
+            Welcome to Lilo Admin Portal
+          </CardTitle>
+          <CardDescription>Sign in to your account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button2
+            variant="outline"
+            size="lg"
+            onClick={handleGoogleLogin}
+            className="w-full gap-3 hover:bg-gray-100 transition-all duration-200"
           >
-            <FcGoogle className="h-5 w-5" />
-            <span>Continue with Google</span>
-          </button>
-          <Button>
-            <FcGoogle className="h-5 w-5" />
+            <FcGoogle className="size-16" />
             Continue with Google
-          </Button>
-        </div>
-      </div>
+          </Button2>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -2,30 +2,23 @@ import React from "react";
 import { Link } from "@tanstack/react-router";
 
 interface NavItemProps {
-  to: string;
+  href: string;
   icon: React.ReactNode;
   label: string;
-  isExpanded: boolean;
 }
 
-const NavItem = ({ to, icon, label, isExpanded }: NavItemProps) => {
+const NavItem = ({ href, icon, label }: NavItemProps) => {
   return (
     <Link
-      to={to}
-      activeProps={{ className: "bg-yellow-100 border-l-4 border-yellow-400" }}
+      to={href}
+      activeProps={{
+        className: "bg-yellow-200 border-l-4 border-yellow-400",
+      }}
       activeOptions={{ exact: true }}
-      className={`group relative flex items-center gap-4 p-2 hover:bg-gray-100 rounded-md ${
-        !isExpanded ? "justify-center" : ""
-      }`}
+      className="group flex items-center gap-3 p-3 rounded-lg transition-colors hover:bg-yellow-200"
     >
       <span className="text-xl min-w-[1.25rem]">{icon}</span>
-      {isExpanded ? (
-        <span className="text-sm font-medium">{label}</span>
-      ) : (
-        <span className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          {label}
-        </span>
-      )}
+      <span className="text-sm font-medium">{label}</span>
     </Link>
   );
 };
