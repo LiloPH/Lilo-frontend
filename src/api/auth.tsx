@@ -26,6 +26,16 @@ interface ApiError {
   };
 }
 
+interface RefreshTokenData {
+  id_token: string;
+  key: string;
+}
+interface RefreshTokenResponse {
+  status: boolean;
+  error?: string | null;
+  data?: RefreshTokenData | null;
+}
+
 const login = async (code: string): Promise<LoginResponse> => {
   try {
     const { data } = await axios.post<AuthData>("/auth/admin-login", { code });
@@ -35,13 +45,19 @@ const login = async (code: string): Promise<LoginResponse> => {
 
     return { status: true, data, error: null };
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const errorData = error.response.data as ApiError;
-      const message = errorData.error?.message || "Login failed";
-      return { status: false, error: message, data: null };
+    if (
+      axios.isAxiosError(error) &&
+      error.response?.data &&
+      error.response.status === 401 &&
+      error.response.data.error.message
+    ) {
+      const errorMessage = error.response.data.error.message;
+      return { status: false, error: errorMessage, data: null };
     }
-    const defaultError = "An unexpected error occurred. Please try again.";
-    return { status: false, error: defaultError, data: null };
+    return {
+      status: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
   }
 };
 
@@ -50,12 +66,40 @@ const logout = async () => {
     await axios.delete("/auth/admin-logout");
     return { status: true, data: "success" };
   } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      error.response?.data &&
+      error.response.status === 401 &&
+      error.response.data.error.message
+    ) {
+      const errorMessage = error.response.data.error.message;
+      return { status: false, error: errorMessage, data: null };
+    }
     return {
       status: false,
       error: "An unexpected error occurred. Please try again.",
-      data: null,
     };
   }
 };
 
-export { login, logout };
+const refreshToken = async (): Promise<RefreshTokenResponse> => {
+  try {
+    const { data } = await axios.post<RefreshTokenData>("/auth/admin-refresh");
+    return { status: true, data };
+  } catch (error) {
+    if (
+      axios.isAxiosError(error) &&
+      error.response?.data &&
+      error.response.status === 401 &&
+      error.response.data.error.message
+    ) {
+      const errorMessage = error.response.data.error.message;
+      return { status: false, error: errorMessage, data: null };
+    }
+    return {
+      status: false,
+      error: "An unexpected error occurred. Please try again.",
+    };
+  }
+};
+export { login, logout, refreshToken };

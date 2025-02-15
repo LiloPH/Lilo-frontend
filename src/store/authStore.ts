@@ -15,11 +15,8 @@ interface AuthState {
   user: User | null;
   setAuth: (auth: boolean) => void;
   setUser: (user: User) => void;
-  loginWithGoogle: (
-    code: string,
-    navigateToDashboard?: () => void
-  ) => Promise<void>;
-  logout: () => Promise<void>;
+  loginWithGoogle: (code: string, callback?: () => void) => Promise<void>;
+  logout: (callback?: () => void) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -27,7 +24,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setAuth: (auth) => set({ isAuthenticated: auth }),
   setUser: (user) => set({ user }),
-  loginWithGoogle: async (code, navigateToDashboard) => {
+  loginWithGoogle: async (code, callback) => {
     const result = await login(code);
 
     if (!result.status) {
@@ -36,9 +33,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
 
     set({ isAuthenticated: true, user: result.data?.user });
-    navigateToDashboard?.();
+    callback?.();
   },
-  logout: async () => {
+  logout: async (callback) => {
     const result = await logout();
 
     if (!result.status) {
@@ -51,5 +48,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isAuthenticated: false, user: null });
 
     toast.success("Logout successful");
+    callback?.();
   },
 }));
