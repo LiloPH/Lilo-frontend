@@ -13,11 +13,11 @@ import {
   SidebarTrigger,
 } from "../ui/sidebar";
 import logo from "@/assets/Lilo.png";
-import icon from "@/assets/icon.png";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { FaHome, FaRoute, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/authStore";
+import { Skeleton } from "../ui/skeleton";
 
 const items = [
   {
@@ -38,12 +38,8 @@ const items = [
 ];
 
 const SideBar = () => {
-  const { logout } = useAuthStore();
+  const { logout, user } = useAuthStore();
   const navigate = useNavigate();
-  const user = {
-    name: "Sample User",
-    email: "user@example.com",
-  };
 
   const { state } = useSidebar();
 
@@ -93,15 +89,31 @@ const SideBar = () => {
               <div
                 className={`flex items-center space-x-4 p-2 ${state === "collapsed" ? "justify-center" : ""}`}
               >
-                <Avatar>
-                  <AvatarImage src={icon} alt={user.name} />
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                {state !== "collapsed" && (
-                  <div className="flex flex-col">
-                    <span className="font-medium">{user.name}</span>
-                    <span className="text-xs text-gray-500">{user.email}</span>
-                  </div>
+                {user ? (
+                  <>
+                    <Avatar>
+                      <AvatarImage src={user?.picture} alt={user?.name} />
+                      <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    {state !== "collapsed" && (
+                      <div className="flex flex-col">
+                        <span className="font-medium">{user?.name}</span>
+                        <span className="text-xs text-gray-500">
+                          {user?.email}
+                        </span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Skeleton className="rounded-full w-9 h-9" />
+                    {state !== "collapsed" && (
+                      <div className="flex flex-col space-y-2">
+                        <Skeleton className="h-4 w-[120px]" />
+                        <Skeleton className="h-3 w-[160px]" />
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
               <SidebarMenu>
@@ -109,7 +121,7 @@ const SideBar = () => {
                   <SidebarMenuButton
                     onClick={handleLogout}
                     variant="outline"
-                    className=" hover:bg-yellow-400 transition duration-200 w-full p-2 shadow-red-300"
+                    className=" hover:bg-yellow-400 transition duration-200 w-full "
                   >
                     <FaSignOutAlt />
                     {state !== "collapsed" && <span>Logout</span>}

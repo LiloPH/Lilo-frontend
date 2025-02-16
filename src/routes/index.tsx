@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter, redirect } from "@tanstack/react-router";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
@@ -14,6 +14,13 @@ import {
 import logo from "@/assets/icon.png";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: async () => {
+    const { refresh } = useAuthStore.getState();
+
+    await refresh(() => {
+      throw redirect({ to: "/dashboard" });
+    });
+  },
   component: Index,
 });
 
@@ -37,7 +44,7 @@ function Index() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+    <div className="min-h-screen flex items-center justify-center bg-yellow-50 p-2 md:p-0">
       <Card className="max-w-md w-full shadow-2xl border-gray-300 bg-white">
         <CardHeader className="text-center space-y-1">
           <center>

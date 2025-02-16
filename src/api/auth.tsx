@@ -29,6 +29,7 @@ interface ApiError {
 interface RefreshTokenData {
   id_token: string;
   key: string;
+  user: User;
 }
 interface RefreshTokenResponse {
   status: boolean;
@@ -84,7 +85,7 @@ const logout = async () => {
 
 const refreshToken = async (): Promise<RefreshTokenResponse> => {
   try {
-    const { data } = await axios.post<RefreshTokenData>("/auth/admin-refresh");
+    const { data } = await axios.get<RefreshTokenData>("/auth/admin-refresh");
     return { status: true, data };
   } catch (error) {
     if (

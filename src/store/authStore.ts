@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { login, logout } from "../api/auth";
+import { login, logout, refreshToken } from "../api/auth";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -12,11 +12,12 @@ interface User {
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: User | null;
+  user: User | null | undefined;
   setAuth: (auth: boolean) => void;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
   loginWithGoogle: (code: string, callback?: () => void) => Promise<void>;
   logout: (callback?: () => void) => Promise<void>;
+  refresh: (callback?: () => void) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -48,6 +49,23 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isAuthenticated: false, user: null });
 
     toast.success("Logout successful");
+    callback?.();
+  },
+  refresh: async (callback) => {
+    const result = await refreshToken();
+
+    if (!result.status) {
+      return;
+    }
+
+    axios.defaults.headers.common["Authorization"] =
+      `Bearer ${result.data?.id_token}`;
+    axios.defaults.headers.common["x-api-key"] = result.data?.key;
+
+    set({
+      isAuthenticated: true,
+      user: result.data?.user,
+    });
     callback?.();
   },
 }));

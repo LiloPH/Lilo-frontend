@@ -10,10 +10,11 @@ import "./api/axios";
 
 import { routeTree } from "./routeTree.gen";
 const isAuthenticated = useAuthStore.getState().isAuthenticated;
+const user = useAuthStore.getState().user;
 
 const queryClient = new QueryClient();
 
-const router = createRouter({ routeTree, context: { isAuthenticated } });
+const router = createRouter({ routeTree, context: { isAuthenticated, user } });
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -28,7 +29,7 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
-          <RouterProvider router={router} context={{ isAuthenticated }} />
+          <RouterProvider router={router} context={{ isAuthenticated, user }} />
           <ToastContainer
             position="bottom-right"
             autoClose={3000}
