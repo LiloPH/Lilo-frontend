@@ -1,9 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { routesQuery } from "@/options/adminQuery";
+import { queryClient } from "@/lib/react-query";
+import { DataTable } from "@/components/table/DataTable";
+import RoutesColumns from "@/components/table/RoutesColumns";
 
 export const Route = createFileRoute("/dashboard/routes")({
+  loader: async () => {
+    await queryClient.prefetchQuery(routesQuery());
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <div>Hello "/dashboard/routes"!</div>;
+  const { data, isLoading, error } = useQuery(routesQuery());
+
+  if (isLoading) return <h1>Loading...</h1>;
+  if (error) return <h1>{error.message}</h1>;
+
+  return (
+    <div className="py-4">
+      <DataTable
+        columns={RoutesColumns()}
+        data={Array.isArray(data?.data?.routes) ? data?.data?.routes : []}
+      />
+    </div>
+  );
 }

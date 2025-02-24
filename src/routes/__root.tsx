@@ -7,7 +7,7 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import "../index.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import SideBar from "@/components/common/SideBar";
+import { SideBar, Header } from "@/components";
 import "@/api/axios";
 
 interface User {
@@ -30,9 +30,13 @@ const RootComponent = () => {
     <>
       <SidebarProvider>
         {isDashboardRoute && <SideBar />}
-        <main className="flex-1 overflow-auto pl-4">
-          <Outlet />
+        <main className="flex-1 overflow-auto">
+          <Header />
+          <div className="px-4">
+            <Outlet />
+          </div>
         </main>
+
         {/* <TanStackRouterDevtools initialIsOpen={false} /> */}
       </SidebarProvider>
     </>

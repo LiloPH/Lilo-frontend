@@ -4,15 +4,14 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import { useAuthStore } from "./store/authStore";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/react-query";
 
 import "./api/axios";
 
 import { routeTree } from "./routeTree.gen";
 const isAuthenticated = useAuthStore.getState().isAuthenticated;
 const user = useAuthStore.getState().user;
-
-const queryClient = new QueryClient();
 
 const router = createRouter({ routeTree, context: { isAuthenticated, user } });
 
