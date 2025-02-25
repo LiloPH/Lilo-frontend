@@ -2,7 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { PromoteDialog } from "@/components/common/PromoteDialog";
+import { PromoteDialog } from "@/components/modal/PromoteDialog";
 
 interface User {
   _id: string;
