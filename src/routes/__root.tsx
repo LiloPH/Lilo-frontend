@@ -32,7 +32,7 @@ const RootComponent = () => {
         {isDashboardRoute && <SideBar />}
         <main className="flex-1 overflow-auto">
           <Header />
-          <div className="px-4">
+          <div>
             <Outlet />
           </div>
         </main>

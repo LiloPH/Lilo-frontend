@@ -20,7 +20,7 @@ function RouteComponent() {
   if (error) return <h1>{error.message}</h1>;
 
   return (
-    <div className="py-4">
+    <div className="p-4">
       <AddRoute />
       <DataTable
         columns={RoutesColumns()}

@@ -25,7 +25,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="container py-4 pr-4">
+    <div className="container p-4">
       <DataTable
         columns={UserColumns({
           users: Array.isArray(data?.data) ? data.data : [],

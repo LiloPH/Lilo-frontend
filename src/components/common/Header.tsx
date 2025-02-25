@@ -21,7 +21,7 @@ const Header = () => {
   return (
     <header
       className={clsx(
-        "flex flex-row items-center justify-between py-4 px-4 bg-amber-200",
+        "flex flex-row items-center justify-between py-2 md:py-4 px-4 bg-amber-200",
         { "flex-row": isAuthenticated }
       )}
     >
@@ -34,7 +34,11 @@ const Header = () => {
           )}
         </Button>
       )}
-      <img src={logo} alt="logo" className="aspect-auto w-20 h-10" />
+      <img
+        src={logo}
+        alt="logo"
+        className="aspect-auto w-15 h-10 md:w-20 md:h-10 "
+      />
       {!isAuthenticated && (
         <NavigationMenu>
           <NavigationMenuList>
