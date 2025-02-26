@@ -51,10 +51,6 @@ const RoutesColumns = (): ColumnDef<Route>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Route Number" />
       ),
-      cell: ({ row }) => {
-        const route = row.original;
-        return <p className="w-full md:w-1/2 text-center">{route.routeNo}</p>;
-      },
     },
     {
       accessorKey: "routeName",
