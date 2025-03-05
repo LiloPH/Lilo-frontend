@@ -6,6 +6,9 @@ import { useNavigate } from "@tanstack/react-router";
 import UpdateRoute from "../modal/UpdateRoute";
 import { Badge } from "../ui/badge";
 import Swal from "sweetalert2";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteRoute } from "@/api/jeepneyRoutes";
+import { toast } from "react-toastify";
 
 interface RouteLog {
   changedBy: string | null;
@@ -24,6 +27,29 @@ interface Route {
 
 const RoutesColumns = (): ColumnDef<Route>[] => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteRoute(id),
+    onSuccess: (response) => {
+      if (!response.status) {
+        toast.error(response.error || "Failed to delete route");
+        return;
+      }
+
+      Swal.fire({
+        title: "Deleted!",
+        text: response.data?.message,
+        icon: "success",
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["routes"] });
+    },
+    onError: (error) => {
+      console.error("Failed to remove route: ", error);
+      toast.error("Failed to delete route. Please try again");
+    },
+  });
 
   const handleDelete = async (_id: string, routeNo: string) => {
     const choice = await Swal.fire({
@@ -37,11 +63,7 @@ const RoutesColumns = (): ColumnDef<Route>[] => {
     });
 
     if (choice.isConfirmed) {
-      Swal.fire({
-        title: "Deleted!",
-        text: "Your file has been deleted.",
-        icon: "success",
-      });
+      deleteMutation.mutate(_id);
     }
   };
 
@@ -118,7 +140,7 @@ const RoutesColumns = (): ColumnDef<Route>[] => {
               _id={route._id}
             />
             <Button
-              className="bg-red-300 text-white hover:text-black"
+              className="bg-red-500 text-white hover:text-black"
               title="delete"
               onClick={() => handleDelete(route._id, String(route.routeNo))}
             >

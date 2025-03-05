@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,14 +20,42 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PlusCircle } from "lucide-react";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createRoute } from "@/api/jeepneyRoutes";
+import { useNavigate } from "@tanstack/react-router";
 
 const formSchema = z.object({
-  routeno: z.number().min(0),
-  route_name: z.string().min(1),
-  route_color: z.string(),
+  routeno: z.number().min(0, "Route number is required"),
+  route_name: z.string().min(1, "Route name is required"),
+  route_color: z.string().min(1, "Route color is required"),
 });
 
 export default function AddRoute() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: createRoute,
+    onSuccess: (response) => {
+      if (!response.status) {
+        toast.error(response.error || "Failed to add route");
+        return;
+      }
+
+      toast.success("Route added successfully!");
+      setIsOpen(false);
+
+      queryClient.invalidateQueries({ queryKey: ["routes"] });
+      navigate({ to: `/dashboard/map/${response.data?._id}` });
+    },
+    onError: (error) => {
+      console.error("Failed to add route:", error);
+      toast.error("Failed to add route. Please try again.");
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,19 +66,17 @@ export default function AddRoute() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast.success("Route added successfully!");
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to add route. Please try again.");
-    }
+    mutation.mutate({
+      routeNo: values.routeno,
+      routeName: values.route_name,
+      routeColor: values.route_color,
+    });
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2 justify-self-end mb-2 bg-green-500 hover:bg-green-200 transition duration-200">
           <PlusCircle className="h-4 w-4" />
           Add Route
         </Button>
@@ -111,7 +136,11 @@ export default function AddRoute() {
 
             <div className="flex justify-end gap-2 pt-4">
               <DialogTrigger asChild>
-                <Button variant="outline" type="button">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => form.reset()}
+                >
                   Cancel
                 </Button>
               </DialogTrigger>

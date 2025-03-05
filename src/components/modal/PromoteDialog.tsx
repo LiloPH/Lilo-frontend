@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Form,
@@ -12,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const formSchema = z.object({
   confirmation: z
@@ -27,6 +30,8 @@ interface User {
 }
 
 export function PromoteDialog({ user }: { user: User }) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,15 +44,13 @@ export function PromoteDialog({ user }: { user: User }) {
     formState: { errors },
   } = form;
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("Form submitted", {
-      id: user._id,
-      ...data,
-    });
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    toast.success("success");
+    setIsOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"

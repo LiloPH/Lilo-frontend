@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Pencil } from "lucide-react";
+import { useState } from "react";
 
 interface routeData {
   routeNo: number;
@@ -42,6 +43,8 @@ export default function UpdateRoute({
   routeColor,
   _id,
 }: routeData) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,10 +54,11 @@ export default function UpdateRoute({
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       console.log(values);
       toast.success("Route updated successfully!");
+      setIsOpen(false);
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to update route. Please try again.");
@@ -62,7 +66,7 @@ export default function UpdateRoute({
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
           <Pencil className="h-4 w-4" />
