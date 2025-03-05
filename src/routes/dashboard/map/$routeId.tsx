@@ -1,11 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
-import { useEffect, useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/lib/react-query";
 import Swal from "sweetalert2";
+import { getOneRouteQuery } from "@/options/routesQuery";
+import { Skeleton } from "@/components/ui/skeleton";
+import WaypointControl from "@/components/map/WaypointControl";
+import MapControl from "@/components/map/MapControl";
+import { JeepneyRouteType } from "@/type";
+import { useRoute } from "@/store/useRouteStore";
 
 const mapContainerStyle = {
   width: "100%",
-  height: "100dvh",
+  height: "90.5dvh",
   padding: "0",
 };
 
@@ -22,17 +31,34 @@ const bounds = {
 };
 
 export const Route = createFileRoute("/dashboard/map/$routeId")({
+  loader: async ({ params }) => {
+    await queryClient.prefetchQuery(getOneRouteQuery(params.routeId));
+  },
   component: MapComponent,
 });
 
 function MapComponent() {
   const { routeId } = Route.useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { setRoutes } = useRoute();
+  const navigate = useNavigate();
+
+  const { data, isLoading, error } = useQuery(getOneRouteQuery(routeId));
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [activeControls, setActiveControls] = useState({
+    zoom: false,
+    streetView: false,
+    mapType: false,
+    fullscreen: false,
+  });
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API as string,
+    libraries: ["places"],
   });
+
+  useEffect(() => {
+    setRoutes(data?.data as unknown as JeepneyRouteType);
+  }, [data, setRoutes]);
 
   const onLoad = useCallback((map: google.maps.Map) => {
     if (!map) return;
@@ -49,20 +75,40 @@ function MapComponent() {
     setMap(null);
   }, []);
 
-  useEffect(() => {
+  if (loadError) {
     Swal.fire({
-      title: "Route ID",
-      text: `You are editing route: ${routeId}`,
-      icon: "info",
+      title: "Error",
+      text: "Failed to load Google Maps",
+      icon: "error",
       confirmButtonText: "OK",
+    }).then(() => {
+      navigate({ to: "/dashboard/routes" });
     });
-  }, [routeId]);
+    return <div>Error loading maps</div>;
+  }
 
-  if (loadError) return <div>Error loading maps</div>;
-  if (!isLoaded) return <div>Loading...</div>;
+  if (error) {
+    Swal.fire({
+      title: "Error",
+      text: `Failed to load route data: ${error.message}`,
+      icon: "error",
+      confirmButtonText: "OK",
+    }).then(() => {
+      navigate({ to: "/dashboard/routes" });
+    });
+    return <div>Error loading route data: {error.message}</div>;
+  }
+
+  if (!isLoaded || isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen p-4">
+        <Skeleton className="w-full h-full rounded-md bg-gray-300" />
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full h-full p-0">
+    <div className="w-full h-full relative">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={13}
@@ -70,15 +116,23 @@ function MapComponent() {
         onLoad={onLoad}
         onUnmount={onUnmount}
         options={{
-          zoomControl: true,
-          streetViewControl: true,
-          mapTypeControl: true,
-          fullscreenControl: true,
+          zoomControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
           mapId: import.meta.env.VITE_MAP_ID,
         }}
       >
         {/* Map markers and other components will go here */}
       </GoogleMap>
+      <WaypointControl />
+      {map && (
+        <MapControl
+          map={map}
+          activeControls={activeControls}
+          setActiveControls={setActiveControls}
+        />
+      )}
     </div>
   );
 }
