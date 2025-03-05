@@ -26,7 +26,12 @@ const Header = () => {
       )}
     >
       {isAuthenticated && (
-        <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebar}
+          className="transition duration-200"
+        >
           {state === "collapsed" ? (
             <Menu className="w-4 h-4" />
           ) : (

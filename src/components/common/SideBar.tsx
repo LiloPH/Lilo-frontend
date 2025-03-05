@@ -57,7 +57,7 @@ const SideBar = () => {
   return (
     <>
       <Sidebar collapsible="icon">
-        <SidebarHeader>
+        <SidebarHeader className="bg-yellow-50">
           <img
             src={logo}
             alt="logo"
@@ -65,7 +65,7 @@ const SideBar = () => {
             height={state === "collapsed" ? 50 : 100}
           />
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="bg-yellow-50">
           <SidebarGroup>
             <SidebarGroupLabel>Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -103,7 +103,7 @@ const SideBar = () => {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter>
+        <SidebarFooter className="bg-yellow-50">
           <SidebarGroup>
             <SidebarGroupContent>
               <TooltipProvider delayDuration={100}>

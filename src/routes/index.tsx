@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter, redirect } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useGoogleLogin } from "@react-oauth/google";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
@@ -12,21 +12,29 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import logo from "@/assets/icon.png";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   beforeLoad: async () => {
     const { refresh } = useAuthStore.getState();
 
-    await refresh(() => {
-      throw redirect({ to: "/dashboard" });
-    });
+    await refresh(() => {});
   },
   component: Index,
 });
 
 function Index() {
   const router = useRouter();
-  const { loginWithGoogle } = useAuthStore();
+  const { loginWithGoogle, isAuthenticated } = useAuthStore();
+  const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setShowAlert(true);
+    }
+  }, [isAuthenticated]);
+
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (response) => {
@@ -43,12 +51,34 @@ function Index() {
     },
   });
 
+  const handleGotoDashboard = () => {
+    router.navigate({ to: "/dashboard" });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-yellow-50 p-2 md:p-0">
+      {showAlert && (
+        <div className="fixed top-4 right-4 z-50 animate-fade-in">
+          <Alert className="bg-white border-amber-500 shadow-lg">
+            <AlertDescription className="flex items-center gap-4">
+              You're already logged in!
+              <Button2
+                variant="outline"
+                size="sm"
+                onClick={handleGotoDashboard}
+                className="border-amber-500 hover:bg-amber-50"
+              >
+                Go to Dashboard
+              </Button2>
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
+
       <Card className="max-w-md w-full shadow-2xl border-gray-300 bg-white">
         <CardHeader className="text-center space-y-1">
           <center>
-            <img src={logo} alt="logo" className=" w-10 h-10" />
+            <img src={logo} alt="logo" className="w-10 h-10" />
           </center>
           <CardTitle className="text-2xl font-bold">
             Welcome to Lilo Admin Portal
