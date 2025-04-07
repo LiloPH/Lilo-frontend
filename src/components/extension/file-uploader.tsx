@@ -1,8 +1,11 @@
+
+import type React from "react";
+
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
-  Dispatch,
-  SetStateAction,
+  type Dispatch,
+  type SetStateAction,
   createContext,
   forwardRef,
   useCallback,
@@ -13,12 +16,12 @@ import {
 } from "react";
 import {
   useDropzone,
-  DropzoneState,
-  FileRejection,
-  DropzoneOptions,
+  type DropzoneState,
+  type FileRejection,
+  type DropzoneOptions,
 } from "react-dropzone";
 import { toast } from "sonner";
-import { Trash2 as RemoveIcon } from "lucide-react";
+import { RemoveFormattingIcon as RemoveIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 
 type DirectionOptions = "rtl" | "ltr" | undefined;
@@ -324,14 +327,16 @@ export const FileInput = forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
   const { dropzoneState, isFileTooBig, isLOF } = useFileUpload();
-  const rootProps = isLOF ? {} : dropzoneState.getRootProps();
+  const rootProps = isLOF
+    ? {}
+    : dropzoneState.getRootProps({
+        // Don't use onClick here as it's interfering with the default behavior
+      });
   return (
     <div
       ref={ref}
       {...props}
-      className={`relative w-full ${
-        isLOF ? "opacity-50 cursor-not-allowed " : "cursor-pointer "
-      }`}
+      className={`relative w-full ${isLOF ? "opacity-50 cursor-not-allowed " : "cursor-pointer "}`}
     >
       <div
         className={cn(
@@ -351,9 +356,10 @@ export const FileInput = forwardRef<
       </div>
       <Input
         ref={dropzoneState.inputRef}
+        type="file"
         disabled={isLOF}
         {...dropzoneState.getInputProps()}
-        className={`${isLOF ? "cursor-not-allowed" : ""}`}
+        className={`hidden ${isLOF ? "cursor-not-allowed" : ""}`}
       />
     </div>
   );
