@@ -31,7 +31,6 @@ const WaypointInput = () => {
   const { inbound, outbound, name, reOrderRoutes, addRoutes } = useRoute();
 
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
     const { source, destination } = result;
 
     if (!destination) return;
@@ -44,6 +43,19 @@ const WaypointInput = () => {
   const handleAddRoutes = (type: "inbound" | "outbound") => {
     addRoutes(type);
     setOpenSection(type);
+  };
+
+  const handleSave = async () => {
+    if (!inbound || !outbound) return;
+
+    const combinedRoutes = [...outbound, ...inbound];
+
+    const combinedWithOrder = combinedRoutes.map((route, index) => ({
+      ...route,
+      order: index,
+    }));
+
+    console.log("Combined waypoints:", combinedWithOrder);
   };
 
   return (
@@ -65,6 +77,7 @@ const WaypointInput = () => {
             <Button
               variant="secondary"
               size="sm"
+              onClick={handleSave}
               className="bg-green-100 hover:bg-green-200 text-green-700 border border-green-300"
             >
               <Save className="h-4 w-4 mr-1" />
