@@ -13,7 +13,13 @@ import {
 } from "../ui/sidebar";
 import logo from "@/assets/Lilo.png";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { FaHome, FaRoute, FaUser, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaRoute,
+  FaUser,
+  FaSignOutAlt,
+  FaGlobeAmericas,
+} from "react-icons/fa";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/store/authStore";
 import { Skeleton } from "../ui/skeleton";
@@ -28,7 +34,7 @@ const items = [
   {
     label: "Home",
     icon: <FaHome />,
-    href: "/dashboard",
+    href: "/dashboard/analytics",
   },
   {
     label: "Routes",
@@ -39,6 +45,11 @@ const items = [
     label: "Users",
     icon: <FaUser />,
     href: "/dashboard/user",
+  },
+  {
+    label: "Tours",
+    icon: <FaGlobeAmericas />,
+    href: "/dashboard/tours",
   },
 ];
 
@@ -83,7 +94,7 @@ const SideBar = () => {
                                 className:
                                   "bg-yellow-100 border-l-4 border-yellow-400",
                               }}
-                              activeOptions={{ exact: true }}
+                              activeOptions={{ exact: false }}
                             >
                               {item.icon}
                               <span>{item.label}</span>

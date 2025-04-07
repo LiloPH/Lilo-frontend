@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "@/assets/Lilo.png";
+import { useLocation } from "@tanstack/react-router";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,7 +9,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useAuthStore } from "@/store/authStore";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -16,16 +16,18 @@ import clsx from "clsx";
 
 const Header = () => {
   const { toggleSidebar, state } = useSidebar();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const location = useLocation();
+
+  const isDashboardRoute = location.pathname.includes("dashboard");
 
   return (
     <header
       className={clsx(
         "flex flex-row items-center justify-between py-2 md:py-4 px-4 bg-amber-200",
-        { "flex-row": isAuthenticated }
+        { "flex-row": isDashboardRoute }
       )}
     >
-      {isAuthenticated && (
+      {isDashboardRoute && (
         <Button
           variant="ghost"
           size="icon"
@@ -44,7 +46,7 @@ const Header = () => {
         alt="logo"
         className="aspect-auto w-15 h-10 md:w-20 md:h-10 "
       />
-      {!isAuthenticated && (
+      {!isDashboardRoute && (
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
