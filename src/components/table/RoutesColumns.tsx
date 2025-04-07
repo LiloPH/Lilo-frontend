@@ -39,7 +39,7 @@ const RoutesColumns = (): ColumnDef<Route>[] => {
 
       Swal.fire({
         title: "Deleted!",
-        text: response.data?.message,
+        text: response.data?.error || "Route deleted successfully",
         icon: "success",
       });
 
