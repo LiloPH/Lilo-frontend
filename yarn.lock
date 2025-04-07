@@ -184,10 +184,10 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
-"@cloudinary/html@^1.13.1":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@cloudinary/html/-/html-1.13.1.tgz#5c9b1f698ee9f579d828219b5be3ee64a6f9d2bb"
-  integrity sha512-DPCyfHnl3eoIH52zprJGJFMb6pQNw/8bXzcpvhnYBUrAr+vS71vjWLd2aojvq1WI2ylfGK/L41y6+0YRrSo3/A==
+"@cloudinary/html@^1.13.2":
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@cloudinary/html/-/html-1.13.2.tgz#1d241dc4b4a4e0f87b80c22085d43c8bfd44efb3"
+  integrity sha512-AosYYA3TLz5astKokgAxRwlSNGCe1Z62EdA6vwgV/TrZ5y+yc7uHa9cRkSoi1M8GTA2aZvTWo6E2nxUZhNVpSg==
   dependencies:
     "@types/lodash.clonedeep" "^4.5.6"
     "@types/lodash.debounce" "^4.0.6"
@@ -196,12 +196,12 @@
     lodash.debounce "^4.0.8"
     typescript "^4.1.2"
 
-"@cloudinary/react@^1.13.1":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@cloudinary/react/-/react-1.13.1.tgz#bd481bbb5463e1459a37aa8a61e9f406f7eebf03"
-  integrity sha512-un8oyTVhIWG4ys5/j43JPYsjo+oWscj+m565JlO7t35yCejy7193ztWOt2K5Z0sp8tsZncVeL9MxjWhVk0CmWg==
+"@cloudinary/react@^1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@cloudinary/react/-/react-1.14.1.tgz#ea4dc278effba90546dc0620bfd9436643495b53"
+  integrity sha512-nELBhpZX5+xzU9pJS1pDHZNGLyuwNxuOqHPV3rheyguBV7h6/TKadM3/f1vs0NPac5g+DnDL7UbQ6PhSjr7j4w==
   dependencies:
-    "@cloudinary/html" "^1.13.1"
+    "@cloudinary/html" "^1.13.2"
 
 "@cloudinary/transformation-builder-sdk@^1.15.1":
   version "1.16.1"
