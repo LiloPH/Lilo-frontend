@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DashboardImport } from './routes/_dashboard'
 import { Route as AuthenticationImport } from './routes/_authentication'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticationDashboardIndexImport } from './routes/_authentication/dashboard/index'
@@ -23,6 +24,11 @@ import { Route as AuthenticationDashboardTourMapTourIdImport } from './routes/_a
 import { Route as AuthenticationDashboardMapRouteIdImport } from './routes/_authentication/dashboard/map/$routeId'
 
 // Create/Update Routes
+
+const DashboardRoute = DashboardImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthenticationRoute = AuthenticationImport.update({
   id: '/_authentication',
@@ -107,6 +113,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthenticationImport
+      parentRoute: typeof rootRoute
+    }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
     '/_authentication/dashboard/analytics': {
@@ -201,7 +214,7 @@ const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AuthenticationRouteWithChildren
+  '': typeof DashboardRoute
   '/dashboard/analytics': typeof AuthenticationDashboardAnalyticsRoute
   '/dashboard/create-tour': typeof AuthenticationDashboardCreateTourRoute
   '/dashboard/routes': typeof AuthenticationDashboardRoutesRoute
@@ -214,7 +227,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AuthenticationRouteWithChildren
+  '': typeof DashboardRoute
   '/dashboard/analytics': typeof AuthenticationDashboardAnalyticsRoute
   '/dashboard/create-tour': typeof AuthenticationDashboardCreateTourRoute
   '/dashboard/routes': typeof AuthenticationDashboardRoutesRoute
@@ -229,6 +242,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_authentication': typeof AuthenticationRouteWithChildren
+  '/_dashboard': typeof DashboardRoute
   '/_authentication/dashboard/analytics': typeof AuthenticationDashboardAnalyticsRoute
   '/_authentication/dashboard/create-tour': typeof AuthenticationDashboardCreateTourRoute
   '/_authentication/dashboard/routes': typeof AuthenticationDashboardRoutesRoute
@@ -268,6 +282,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authentication'
+    | '/_dashboard'
     | '/_authentication/dashboard/analytics'
     | '/_authentication/dashboard/create-tour'
     | '/_authentication/dashboard/routes'
@@ -282,11 +297,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticationRoute: typeof AuthenticationRouteWithChildren
+  DashboardRoute: typeof DashboardRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticationRoute: AuthenticationRouteWithChildren,
+  DashboardRoute: DashboardRoute,
 }
 
 export const routeTree = rootRoute
@@ -300,7 +317,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_authentication"
+        "/_authentication",
+        "/_dashboard"
       ]
     },
     "/": {
@@ -318,6 +336,9 @@ export const routeTree = rootRoute
         "/_authentication/dashboard/map/$routeId",
         "/_authentication/dashboard/tour-map/$tourId"
       ]
+    },
+    "/_dashboard": {
+      "filePath": "_dashboard.tsx"
     },
     "/_authentication/dashboard/analytics": {
       "filePath": "_authentication/dashboard/analytics.tsx",
