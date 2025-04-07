@@ -1,17 +1,18 @@
 export type RouteType = "inbound" | "outbound";
+export type Location = { lat: number | null; lng: number | null };
 
 export interface StopType {
   name: string;
-  order: number;
-  location: { lat: number; lng: number };
-  routeNo: number;
+  order: number | null;
+  location: Location;
+  routeNo: number | null;
 }
 
 export interface LocationType {
   name: string;
   isOutBound: boolean;
   order: number | null;
-  location: { lat: number | null; lng: number | null };
+  location: Location;
   routeNo: number | null;
   stops: StopType[];
 }

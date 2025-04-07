@@ -10,7 +10,7 @@ import { queryClient } from "./lib/react-query";
 import "./api/axios";
 
 import { routeTree } from "./routeTree.gen";
-const isAuthenticated = useAuthStore.getState().isAuthenticated;
+const isAuthenticated = useAuthStore.getState().isLoggedIn;
 const user = useAuthStore.getState().user;
 
 const router = createRouter({ routeTree, context: { isAuthenticated, user } });

@@ -56,7 +56,7 @@ function Index() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-yellow-50 p-2 md:p-0">
+    <div className="min-h-[100dvh] flex items-center justify-center bg-yellow-50 p-2 md:p-0">
       {showAlert && (
         <div className="fixed top-4 right-4 z-50 animate-fade-in">
           <Alert className="bg-white border-amber-500 shadow-lg">

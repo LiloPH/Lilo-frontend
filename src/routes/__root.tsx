@@ -18,7 +18,7 @@ interface User {
 }
 
 type RouterContext = {
-  isAuthenticated: boolean;
+  isAuthenticated: () => Promise<boolean>;
   user: User | null | undefined;
 };
 

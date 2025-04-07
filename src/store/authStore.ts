@@ -18,6 +18,7 @@ interface AuthState {
   loginWithGoogle: (code: string, callback?: () => void) => Promise<void>;
   logout: (callback?: () => void) => Promise<void>;
   refresh: (callback?: () => void) => Promise<void>;
+  isLoggedIn: () => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -67,5 +68,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       user: result.data?.user,
     });
     callback?.();
+  },
+
+  isLoggedIn: async (): Promise<boolean> => {
+    return useAuthStore.getState().isAuthenticated;
   },
 }));

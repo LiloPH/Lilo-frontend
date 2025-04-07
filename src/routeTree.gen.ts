@@ -11,17 +11,21 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as DashboardImport } from './routes/_dashboard'
+import { Route as AuthenticationImport } from './routes/_authentication'
 import { Route as IndexImport } from './routes/index'
-import { Route as DashboardIndexImport } from './routes/dashboard/index'
-import { Route as DashboardUserImport } from './routes/dashboard/user'
-import { Route as DashboardRoutesImport } from './routes/dashboard/routes'
-import { Route as DashboardMapRouteIdImport } from './routes/dashboard/map/$routeId'
+import { Route as AuthenticationDashboardIndexImport } from './routes/_authentication/dashboard/index'
+import { Route as AuthenticationDashboardUserImport } from './routes/_authentication/dashboard/user'
+import { Route as AuthenticationDashboardToursImport } from './routes/_authentication/dashboard/tours'
+import { Route as AuthenticationDashboardRoutesImport } from './routes/_authentication/dashboard/routes'
+import { Route as AuthenticationDashboardCreateTourImport } from './routes/_authentication/dashboard/create-tour'
+import { Route as AuthenticationDashboardAnalyticsImport } from './routes/_authentication/dashboard/analytics'
+import { Route as AuthenticationDashboardTourMapTourIdImport } from './routes/_authentication/dashboard/tour-map/$tourId'
+import { Route as AuthenticationDashboardMapRouteIdImport } from './routes/_authentication/dashboard/map/$routeId'
 
 // Create/Update Routes
 
-const DashboardRoute = DashboardImport.update({
-  id: '/_dashboard',
+const AuthenticationRoute = AuthenticationImport.update({
+  id: '/_authentication',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -31,29 +35,61 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardIndexRoute = DashboardIndexImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticationDashboardIndexRoute =
+  AuthenticationDashboardIndexImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
 
-const DashboardUserRoute = DashboardUserImport.update({
-  id: '/dashboard/user',
-  path: '/dashboard/user',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticationDashboardUserRoute =
+  AuthenticationDashboardUserImport.update({
+    id: '/dashboard/user',
+    path: '/dashboard/user',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
 
-const DashboardRoutesRoute = DashboardRoutesImport.update({
-  id: '/dashboard/routes',
-  path: '/dashboard/routes',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticationDashboardToursRoute =
+  AuthenticationDashboardToursImport.update({
+    id: '/dashboard/tours',
+    path: '/dashboard/tours',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
 
-const DashboardMapRouteIdRoute = DashboardMapRouteIdImport.update({
-  id: '/dashboard/map/$routeId',
-  path: '/dashboard/map/$routeId',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticationDashboardRoutesRoute =
+  AuthenticationDashboardRoutesImport.update({
+    id: '/dashboard/routes',
+    path: '/dashboard/routes',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
+
+const AuthenticationDashboardCreateTourRoute =
+  AuthenticationDashboardCreateTourImport.update({
+    id: '/dashboard/create-tour',
+    path: '/dashboard/create-tour',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
+
+const AuthenticationDashboardAnalyticsRoute =
+  AuthenticationDashboardAnalyticsImport.update({
+    id: '/dashboard/analytics',
+    path: '/dashboard/analytics',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
+
+const AuthenticationDashboardTourMapTourIdRoute =
+  AuthenticationDashboardTourMapTourIdImport.update({
+    id: '/dashboard/tour-map/$tourId',
+    path: '/dashboard/tour-map/$tourId',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
+
+const AuthenticationDashboardMapRouteIdRoute =
+  AuthenticationDashboardMapRouteIdImport.update({
+    id: '/dashboard/map/$routeId',
+    path: '/dashboard/map/$routeId',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -66,72 +102,141 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/_dashboard': {
-      id: '/_dashboard'
+    '/_authentication': {
+      id: '/_authentication'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof DashboardImport
+      preLoaderRoute: typeof AuthenticationImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/routes': {
-      id: '/dashboard/routes'
+    '/_authentication/dashboard/analytics': {
+      id: '/_authentication/dashboard/analytics'
+      path: '/dashboard/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof AuthenticationDashboardAnalyticsImport
+      parentRoute: typeof AuthenticationImport
+    }
+    '/_authentication/dashboard/create-tour': {
+      id: '/_authentication/dashboard/create-tour'
+      path: '/dashboard/create-tour'
+      fullPath: '/dashboard/create-tour'
+      preLoaderRoute: typeof AuthenticationDashboardCreateTourImport
+      parentRoute: typeof AuthenticationImport
+    }
+    '/_authentication/dashboard/routes': {
+      id: '/_authentication/dashboard/routes'
       path: '/dashboard/routes'
       fullPath: '/dashboard/routes'
-      preLoaderRoute: typeof DashboardRoutesImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticationDashboardRoutesImport
+      parentRoute: typeof AuthenticationImport
     }
-    '/dashboard/user': {
-      id: '/dashboard/user'
+    '/_authentication/dashboard/tours': {
+      id: '/_authentication/dashboard/tours'
+      path: '/dashboard/tours'
+      fullPath: '/dashboard/tours'
+      preLoaderRoute: typeof AuthenticationDashboardToursImport
+      parentRoute: typeof AuthenticationImport
+    }
+    '/_authentication/dashboard/user': {
+      id: '/_authentication/dashboard/user'
       path: '/dashboard/user'
       fullPath: '/dashboard/user'
-      preLoaderRoute: typeof DashboardUserImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticationDashboardUserImport
+      parentRoute: typeof AuthenticationImport
     }
-    '/dashboard/': {
-      id: '/dashboard/'
+    '/_authentication/dashboard/': {
+      id: '/_authentication/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticationDashboardIndexImport
+      parentRoute: typeof AuthenticationImport
     }
-    '/dashboard/map/$routeId': {
-      id: '/dashboard/map/$routeId'
+    '/_authentication/dashboard/map/$routeId': {
+      id: '/_authentication/dashboard/map/$routeId'
       path: '/dashboard/map/$routeId'
       fullPath: '/dashboard/map/$routeId'
-      preLoaderRoute: typeof DashboardMapRouteIdImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticationDashboardMapRouteIdImport
+      parentRoute: typeof AuthenticationImport
+    }
+    '/_authentication/dashboard/tour-map/$tourId': {
+      id: '/_authentication/dashboard/tour-map/$tourId'
+      path: '/dashboard/tour-map/$tourId'
+      fullPath: '/dashboard/tour-map/$tourId'
+      preLoaderRoute: typeof AuthenticationDashboardTourMapTourIdImport
+      parentRoute: typeof AuthenticationImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticationRouteChildren {
+  AuthenticationDashboardAnalyticsRoute: typeof AuthenticationDashboardAnalyticsRoute
+  AuthenticationDashboardCreateTourRoute: typeof AuthenticationDashboardCreateTourRoute
+  AuthenticationDashboardRoutesRoute: typeof AuthenticationDashboardRoutesRoute
+  AuthenticationDashboardToursRoute: typeof AuthenticationDashboardToursRoute
+  AuthenticationDashboardUserRoute: typeof AuthenticationDashboardUserRoute
+  AuthenticationDashboardIndexRoute: typeof AuthenticationDashboardIndexRoute
+  AuthenticationDashboardMapRouteIdRoute: typeof AuthenticationDashboardMapRouteIdRoute
+  AuthenticationDashboardTourMapTourIdRoute: typeof AuthenticationDashboardTourMapTourIdRoute
+}
+
+const AuthenticationRouteChildren: AuthenticationRouteChildren = {
+  AuthenticationDashboardAnalyticsRoute: AuthenticationDashboardAnalyticsRoute,
+  AuthenticationDashboardCreateTourRoute:
+    AuthenticationDashboardCreateTourRoute,
+  AuthenticationDashboardRoutesRoute: AuthenticationDashboardRoutesRoute,
+  AuthenticationDashboardToursRoute: AuthenticationDashboardToursRoute,
+  AuthenticationDashboardUserRoute: AuthenticationDashboardUserRoute,
+  AuthenticationDashboardIndexRoute: AuthenticationDashboardIndexRoute,
+  AuthenticationDashboardMapRouteIdRoute:
+    AuthenticationDashboardMapRouteIdRoute,
+  AuthenticationDashboardTourMapTourIdRoute:
+    AuthenticationDashboardTourMapTourIdRoute,
+}
+
+const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
+  AuthenticationRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof DashboardRoute
-  '/dashboard/routes': typeof DashboardRoutesRoute
-  '/dashboard/user': typeof DashboardUserRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/map/$routeId': typeof DashboardMapRouteIdRoute
+  '': typeof AuthenticationRouteWithChildren
+  '/dashboard/analytics': typeof AuthenticationDashboardAnalyticsRoute
+  '/dashboard/create-tour': typeof AuthenticationDashboardCreateTourRoute
+  '/dashboard/routes': typeof AuthenticationDashboardRoutesRoute
+  '/dashboard/tours': typeof AuthenticationDashboardToursRoute
+  '/dashboard/user': typeof AuthenticationDashboardUserRoute
+  '/dashboard': typeof AuthenticationDashboardIndexRoute
+  '/dashboard/map/$routeId': typeof AuthenticationDashboardMapRouteIdRoute
+  '/dashboard/tour-map/$tourId': typeof AuthenticationDashboardTourMapTourIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof DashboardRoute
-  '/dashboard/routes': typeof DashboardRoutesRoute
-  '/dashboard/user': typeof DashboardUserRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/map/$routeId': typeof DashboardMapRouteIdRoute
+  '': typeof AuthenticationRouteWithChildren
+  '/dashboard/analytics': typeof AuthenticationDashboardAnalyticsRoute
+  '/dashboard/create-tour': typeof AuthenticationDashboardCreateTourRoute
+  '/dashboard/routes': typeof AuthenticationDashboardRoutesRoute
+  '/dashboard/tours': typeof AuthenticationDashboardToursRoute
+  '/dashboard/user': typeof AuthenticationDashboardUserRoute
+  '/dashboard': typeof AuthenticationDashboardIndexRoute
+  '/dashboard/map/$routeId': typeof AuthenticationDashboardMapRouteIdRoute
+  '/dashboard/tour-map/$tourId': typeof AuthenticationDashboardTourMapTourIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/_dashboard': typeof DashboardRoute
-  '/dashboard/routes': typeof DashboardRoutesRoute
-  '/dashboard/user': typeof DashboardUserRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/map/$routeId': typeof DashboardMapRouteIdRoute
+  '/_authentication': typeof AuthenticationRouteWithChildren
+  '/_authentication/dashboard/analytics': typeof AuthenticationDashboardAnalyticsRoute
+  '/_authentication/dashboard/create-tour': typeof AuthenticationDashboardCreateTourRoute
+  '/_authentication/dashboard/routes': typeof AuthenticationDashboardRoutesRoute
+  '/_authentication/dashboard/tours': typeof AuthenticationDashboardToursRoute
+  '/_authentication/dashboard/user': typeof AuthenticationDashboardUserRoute
+  '/_authentication/dashboard/': typeof AuthenticationDashboardIndexRoute
+  '/_authentication/dashboard/map/$routeId': typeof AuthenticationDashboardMapRouteIdRoute
+  '/_authentication/dashboard/tour-map/$tourId': typeof AuthenticationDashboardTourMapTourIdRoute
 }
 
 export interface FileRouteTypes {
@@ -139,45 +244,49 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/dashboard/analytics'
+    | '/dashboard/create-tour'
     | '/dashboard/routes'
+    | '/dashboard/tours'
     | '/dashboard/user'
     | '/dashboard'
     | '/dashboard/map/$routeId'
+    | '/dashboard/tour-map/$tourId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
+    | '/dashboard/analytics'
+    | '/dashboard/create-tour'
     | '/dashboard/routes'
+    | '/dashboard/tours'
     | '/dashboard/user'
     | '/dashboard'
     | '/dashboard/map/$routeId'
+    | '/dashboard/tour-map/$tourId'
   id:
     | '__root__'
     | '/'
-    | '/_dashboard'
-    | '/dashboard/routes'
-    | '/dashboard/user'
-    | '/dashboard/'
-    | '/dashboard/map/$routeId'
+    | '/_authentication'
+    | '/_authentication/dashboard/analytics'
+    | '/_authentication/dashboard/create-tour'
+    | '/_authentication/dashboard/routes'
+    | '/_authentication/dashboard/tours'
+    | '/_authentication/dashboard/user'
+    | '/_authentication/dashboard/'
+    | '/_authentication/dashboard/map/$routeId'
+    | '/_authentication/dashboard/tour-map/$tourId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
-  DashboardRoutesRoute: typeof DashboardRoutesRoute
-  DashboardUserRoute: typeof DashboardUserRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardMapRouteIdRoute: typeof DashboardMapRouteIdRoute
+  AuthenticationRoute: typeof AuthenticationRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
-  DashboardRoutesRoute: DashboardRoutesRoute,
-  DashboardUserRoute: DashboardUserRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
-  DashboardMapRouteIdRoute: DashboardMapRouteIdRoute,
+  AuthenticationRoute: AuthenticationRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -191,30 +300,56 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_dashboard",
-        "/dashboard/routes",
-        "/dashboard/user",
-        "/dashboard/",
-        "/dashboard/map/$routeId"
+        "/_authentication"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/_dashboard": {
-      "filePath": "_dashboard.tsx"
+    "/_authentication": {
+      "filePath": "_authentication.tsx",
+      "children": [
+        "/_authentication/dashboard/analytics",
+        "/_authentication/dashboard/create-tour",
+        "/_authentication/dashboard/routes",
+        "/_authentication/dashboard/tours",
+        "/_authentication/dashboard/user",
+        "/_authentication/dashboard/",
+        "/_authentication/dashboard/map/$routeId",
+        "/_authentication/dashboard/tour-map/$tourId"
+      ]
     },
-    "/dashboard/routes": {
-      "filePath": "dashboard/routes.tsx"
+    "/_authentication/dashboard/analytics": {
+      "filePath": "_authentication/dashboard/analytics.tsx",
+      "parent": "/_authentication"
     },
-    "/dashboard/user": {
-      "filePath": "dashboard/user.tsx"
+    "/_authentication/dashboard/create-tour": {
+      "filePath": "_authentication/dashboard/create-tour.tsx",
+      "parent": "/_authentication"
     },
-    "/dashboard/": {
-      "filePath": "dashboard/index.tsx"
+    "/_authentication/dashboard/routes": {
+      "filePath": "_authentication/dashboard/routes.tsx",
+      "parent": "/_authentication"
     },
-    "/dashboard/map/$routeId": {
-      "filePath": "dashboard/map/$routeId.tsx"
+    "/_authentication/dashboard/tours": {
+      "filePath": "_authentication/dashboard/tours.tsx",
+      "parent": "/_authentication"
+    },
+    "/_authentication/dashboard/user": {
+      "filePath": "_authentication/dashboard/user.tsx",
+      "parent": "/_authentication"
+    },
+    "/_authentication/dashboard/": {
+      "filePath": "_authentication/dashboard/index.tsx",
+      "parent": "/_authentication"
+    },
+    "/_authentication/dashboard/map/$routeId": {
+      "filePath": "_authentication/dashboard/map/$routeId.tsx",
+      "parent": "/_authentication"
+    },
+    "/_authentication/dashboard/tour-map/$tourId": {
+      "filePath": "_authentication/dashboard/tour-map/$tourId.tsx",
+      "parent": "/_authentication"
     }
   }
 }
