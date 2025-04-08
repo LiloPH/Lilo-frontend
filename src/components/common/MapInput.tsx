@@ -65,11 +65,7 @@ const MapInput = ({ waypoint, index, type }: MapInputTypeProp) => {
     }
   };
 
-  const toggleSelectedStop = (
-    type: RouteType,
-    index: number,
-    order: number
-  ) => {
+  const toggleSelectedStop = (type: RouteType, index: number) => {
     toggleShowStopControl();
 
     setSelectedStop(type, index);
@@ -134,7 +130,7 @@ const MapInput = ({ waypoint, index, type }: MapInputTypeProp) => {
               size="icon"
               onClick={() => {
                 if (waypoint?.order !== null) {
-                  toggleSelectedStop(type, index, waypoint.order);
+                  toggleSelectedStop(type, index);
                 }
               }}
               className={clsx(

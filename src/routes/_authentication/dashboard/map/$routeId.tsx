@@ -17,7 +17,7 @@ import { reverseGeocode } from "@/lib/reverseGeocode";
 
 const mapContainerStyle = {
   width: "100%",
-  height: "90.5dvh",
+  height: "90dvh",
   padding: "0",
 };
 
@@ -44,7 +44,8 @@ export const Route = createFileRoute("/_authentication/dashboard/map/$routeId")(
 
 function MapComponent() {
   const { routeId } = Route.useParams();
-  const { setRoutes, selectedStop, setWaypointData, isPlacing } = useRoute();
+  const { setRoutes, selectedStop, setWaypointData, isPlacing, setIsPlacing } =
+    useRoute();
   const { showStopControl } = showStore();
 
   const navigate = useNavigate();
@@ -79,6 +80,12 @@ function MapComponent() {
         location,
         name
       );
+
+      setIsPlacing({
+        placing: false,
+        type: isPlacing.type,
+        waypointIndex: isPlacing.waypointIndex,
+      });
     }
   };
 
@@ -100,6 +107,14 @@ function MapComponent() {
   const onUnmount = useCallback(() => {
     setMap(null);
   }, []);
+
+  useEffect(() => {
+    if (map) {
+      map.setOptions({
+        draggableCursor: isPlacing?.placing ? "crosshair" : "cursor",
+      });
+    }
+  }, [isPlacing, map]);
 
   if (loadError) {
     Swal.fire({
@@ -148,6 +163,7 @@ function MapComponent() {
           mapTypeControl: false,
           fullscreenControl: false,
           mapId: import.meta.env.VITE_MAP_ID,
+          draggableCursor: isPlacing?.placing ? "crosshair" : "cursor",
         }}
       >
         {/* Map markers and other components will go here */}

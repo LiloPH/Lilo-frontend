@@ -47,9 +47,9 @@ const MapControl: React.FC<MapControlProps> = ({
   };
 
   return (
-    <div className="absolute bottom-2 right-2 bg-yellow-50 rounded-lg shadow-md p-2">
+    <div className="absolute bottom-2 left-2 bg-yellow-50 rounded-lg shadow-md p-2 md:bottom-2 md:left-2">
       <div className="flex flex-col gap-3">
-        <button
+        {/* <button
           onClick={() => toggleControl("zoom")}
           className={`p-2 rounded-full ${
             activeControls.zoom
@@ -59,9 +59,9 @@ const MapControl: React.FC<MapControlProps> = ({
           title="Zoom Controls"
         >
           <ZoomIn size={20} />
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           onClick={() => toggleControl("streetView")}
           className={`p-2 rounded-full ${
             activeControls.streetView
@@ -71,9 +71,9 @@ const MapControl: React.FC<MapControlProps> = ({
           title="Street View"
         >
           <Globe size={20} />
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           onClick={() => toggleControl("mapType")}
           className={`p-2 rounded-full ${
             activeControls.mapType
@@ -83,9 +83,9 @@ const MapControl: React.FC<MapControlProps> = ({
           title="Map Type"
         >
           <LucideMap size={20} />
-        </button>
+        </button> */}
 
-        <button
+        {/* <button
           onClick={() => toggleControl("fullscreen")}
           className={`p-2 rounded-full ${
             activeControls.fullscreen
@@ -95,7 +95,7 @@ const MapControl: React.FC<MapControlProps> = ({
           title="Fullscreen"
         >
           <Maximize2 size={20} />
-        </button>
+        </button> */}
       </div>
     </div>
   );
