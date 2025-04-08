@@ -65,10 +65,14 @@ const MapInput = ({ waypoint, index, type }: MapInputTypeProp) => {
     }
   };
 
-  const toggleSelectedStop = (type: RouteType, index: number) => {
+  const toggleSelectedStop = (
+    type: RouteType,
+    index: number,
+    waypoint: LocationType
+  ) => {
     toggleShowStopControl();
 
-    setSelectedStop(type, index);
+    setSelectedStop(type, index, waypoint);
   };
 
   const handlePlaceSelect = (autocomplete: google.maps.places.Autocomplete) => {
@@ -130,7 +134,7 @@ const MapInput = ({ waypoint, index, type }: MapInputTypeProp) => {
               size="icon"
               onClick={() => {
                 if (waypoint?.order !== null) {
-                  toggleSelectedStop(type, index);
+                  toggleSelectedStop(type, index, waypoint);
                 }
               }}
               className={clsx(

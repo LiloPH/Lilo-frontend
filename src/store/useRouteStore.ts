@@ -12,6 +12,7 @@ import { reverseGeocode } from "@/lib/reverseGeocode";
 interface SelectedRouteInfo {
   waypointIndex: number;
   type: RouteType;
+  waypoint?: LocationType;
 }
 
 interface isPlacingType {
@@ -37,7 +38,11 @@ interface TROute {
   ) => void;
   addRoutes: (type: RouteType) => void;
   deleteRoute: (type: RouteType, index: number) => void;
-  setSelectedStop: (type: RouteType, index: number) => void;
+  setSelectedStop: (
+    type: RouteType,
+    index: number,
+    waypoint: LocationType
+  ) => void;
   addStop: (type: RouteType | null, index: number) => void;
   setWaypointName: (type: RouteType, index: number, name: string) => void;
   setWaypointData: (
@@ -128,12 +133,16 @@ export const useRoute = create<TROute>((set) => ({
       })
     ),
 
-  setSelectedStop: (type, index) => {
+  setSelectedStop: (type, index, waypoint) => {
     set(
       produce<TROute>((state) => {
         const routeType = type === "inbound" ? state.inbound : state.outbound;
 
-        state.selectedRouteInfo = { waypointIndex: index, type: type };
+        state.selectedRouteInfo = {
+          waypointIndex: index,
+          type: type,
+          waypoint: waypoint,
+        };
 
         if (!routeType || !routeType[index]) {
           state.selectedStop = null;
