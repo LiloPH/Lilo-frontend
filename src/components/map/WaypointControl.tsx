@@ -22,13 +22,22 @@ import {
 import { useRoute } from "@/store/useRouteStore";
 import { DragDropContext, Droppable, DropResult } from "@hello-pangea/dnd";
 import MapInput from "../common/MapInput";
+import { showStore } from "@/store/showStore";
 
 const WaypointInput = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openSection, setOpenSection] = useState<"inbound" | "outbound" | null>(
     null
   );
-  const { inbound, outbound, name, reOrderRoutes, addRoutes } = useRoute();
+  const {
+    inbound,
+    outbound,
+    name,
+    reOrderRoutes,
+    addRoutes,
+    clearSelectedStop,
+  } = useRoute();
+  const { clearControl } = showStore();
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -58,13 +67,19 @@ const WaypointInput = () => {
     console.log("Combined waypoints:", combinedWithOrder);
   };
 
+  const handleRerturn = () => {
+    clearControl();
+    clearSelectedStop();
+  };
+
   return (
-    <div className="absolute top-0 left-0 bg-white w-full md:left-2 md:top-2 md:w-md  overflow-hidden">
+    <div className="absolute top-0 left-0 rounded-md bg-white w-full md:left-2 md:top-2 md:w-md  overflow-hidden">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex gap-2 items-center px-4 py-3 w-full justify-between border-b border-gray-100">
             <Link
               to="/dashboard/routes"
+              onClick={handleRerturn}
               className="hover:bg-gray-100 p-1 rounded-full transition-colors"
             >
               <ChevronLeft className="h-5 w-5 text-gray-600" />

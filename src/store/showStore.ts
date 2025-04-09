@@ -4,6 +4,7 @@ import { produce } from "immer";
 interface ShowStore {
   showStopControl: boolean;
   toggleShowStopControl: () => void;
+  clearControl: () => void;
 }
 
 export const showStore = create<ShowStore>((set) => ({
@@ -14,4 +15,12 @@ export const showStore = create<ShowStore>((set) => ({
         state.showStopControl = !state.showStopControl;
       })
     ),
+
+  clearControl: () => {
+    set(
+      produce<ShowStore>((state) => {
+        state.showStopControl = false;
+      })
+    );
+  },
 }));

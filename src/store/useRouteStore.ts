@@ -43,6 +43,7 @@ interface TROute {
     index: number,
     waypoint: LocationType
   ) => void;
+  clearSelectedStop: () => void;
   addStop: (type: RouteType | null, index: number) => void;
   setWaypointName: (type: RouteType, index: number, name: string) => void;
   setWaypointData: (
@@ -151,6 +152,15 @@ export const useRoute = create<TROute>((set) => ({
 
         state.selectedStop =
           routeType[index].stops.length > 0 ? routeType[index].stops : [];
+      })
+    );
+  },
+
+  clearSelectedStop: () => {
+    set(
+      produce<TROute>((state) => {
+        state.selectedStop = null;
+        state.selectedRouteInfo = null;
       })
     );
   },
