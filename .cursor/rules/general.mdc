@@ -1,0 +1,68 @@
+---
+description: Web frontend best practices for liloph-lilo-frontend using React, Vite, and TypeScript
+globs:
+  - liloph-lilo-frontend/**
+alwaysApply: false
+---
+
+// React + Vite + TypeScript Best Practices for liloph-lilo-frontend
+
+const frontendBestPractices = [
+  "Use file-based routing under 'routes/' with clear nesting conventions",
+  "Modularize reusable UI components under 'components/ui'",
+  "Organize feature-specific UI under 'components/common', 'components/map', etc.",
+  "Implement global state using Zustand (store/*.ts)",
+  "Use React Query for async operations and caching (lib/react-query.tsx)",
+  "Apply lazy loading for heavy or conditional routes (e.g., dashboard subroutes)",
+  "Use custom hooks in 'hooks/' to abstract logic (e.g., useGeocode, useImageUpload)",
+  "Keep data fetching logic in 'api/' and cache layer in 'options/' for separation",
+  "Enforce type safety across the project using *.ts and *.tsx files",
+  "Apply consistent styling using shared component styles and utility-first CSS",
+];
+
+// Folder Structure (based on liloph-lilo-frontend)
+
+const folderStructure = `
+public/
+src/
+  ├── api/
+  ├── assets/
+  ├── components/
+      ├── common/
+      ├── extension/
+      ├── map/
+      ├── modal/
+      ├── skeleton/
+      ├── table/
+      └── ui/
+  ├── hooks/
+  ├── lib/
+  ├── options/
+  ├── routes/
+      └── _authentication/
+          └── dashboard/
+  ├── store/
+  ├── index.css
+  ├── main.tsx
+  └── type.ts
+vite.config.ts
+eslint.config.js
+tsconfig.json
+index.html
+`;
+
+// Additional Guidelines
+
+const additionalGuidelines = `
+1. Use Zustand for global state (authStore, routeStore)
+2. Co-locate route-specific data fetching logic under 'options/'
+3. Prefer client-side routing with lazy loading for nested routes
+4. Use React Query for auto-caching and background refetching
+5. Extract shared utility logic to 'lib/' (e.g., reverseGeocode, utils)
+6. Follow atomic design in 'components/'—ui, layout, containers, etc.
+7. Use async/await and handle all API errors gracefully
+8. Prefer CSS modules or Tailwind for scoped and utility-first styles
+9. Leverage Vite's fast HMR and dev tooling for rapid feedback
+10. Use ESLint and TSConfig strictly for code quality and consistency
+`;
+
