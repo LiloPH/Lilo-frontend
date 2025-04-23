@@ -156,7 +156,12 @@ const MapInput = ({ waypoint, index, type }: MapInputTypeProp) => {
                   "hover:bg-green-300 text-black duration-200"
               )}
               onClick={() =>
-                setIsPlacing({ waypointIndex: index, type, placing: true })
+                setIsPlacing({
+                  waypointIndex: index,
+                  type,
+                  placing: true,
+                  locationType: "waypoint",
+                })
               }
             >
               <MapPinCheckInside />

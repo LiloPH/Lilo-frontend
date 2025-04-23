@@ -1,5 +1,6 @@
 export type RouteType = "inbound" | "outbound";
 export type Location = { lat: number | null; lng: number | null };
+export type LocType = "waypoint" | "stop";
 
 export interface StopType {
   name: string;

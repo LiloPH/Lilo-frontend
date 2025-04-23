@@ -85,6 +85,7 @@ function MapComponent() {
         placing: false,
         type: isPlacing.type,
         waypointIndex: isPlacing.waypointIndex,
+        locationType: isPlacing.locationType,
       });
     }
   };

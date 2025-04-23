@@ -4,6 +4,7 @@ import {
   LocationType,
   RouteType,
   StopType,
+  LocType,
 } from "@/type";
 import { create } from "zustand";
 import { produce } from "immer";
@@ -12,13 +13,14 @@ import { reverseGeocode } from "@/lib/reverseGeocode";
 interface SelectedRouteInfo {
   waypointIndex: number;
   type: RouteType;
-  waypoint?: LocationType;
+  waypoint: LocationType;
 }
 
 interface isPlacingType {
   waypointIndex: number;
   type: RouteType;
   placing: boolean;
+  locationType: LocType;
 }
 
 interface TROute {
@@ -29,7 +31,12 @@ interface TROute {
   selectedStop: StopType[] | null;
   selectedRouteInfo: SelectedRouteInfo | null;
   isPlacing: isPlacingType | null;
-  setIsPlacing: ({ waypointIndex, type, placing }: isPlacingType) => void;
+  setIsPlacing: ({
+    waypointIndex,
+    type,
+    placing,
+    locationType,
+  }: isPlacingType) => void;
   setRoutes: (data: JeepneyRouteType) => void;
   reOrderRoutes: (
     type: RouteType,
@@ -44,7 +51,6 @@ interface TROute {
     waypoint: LocationType
   ) => void;
   clearSelectedStop: () => void;
-  addStop: (type: RouteType | null, index: number) => void;
   setWaypointName: (type: RouteType, index: number, name: string) => void;
   setWaypointData: (
     type: RouteType,
@@ -52,6 +58,15 @@ interface TROute {
     location: Location,
     name?: string
   ) => Promise<void>;
+  addStop: (type: RouteType | null, index: number) => void;
+  setStopData: (
+    type: RouteType,
+    index: number,
+    location: Location,
+    name?: string
+  ) => Promise<void>;
+  setStopName: (type: RouteType, index: number, name: string) => void;
+  deleteStop: (type: RouteType, index: number, stopIndex: number) => void;
 }
 
 const newRoute: LocationType = {
@@ -78,10 +93,10 @@ export const useRoute = create<TROute>((set) => ({
   selectedStop: null,
   selectedRouteInfo: null,
   isPlacing: null,
-  setIsPlacing: ({ waypointIndex, type, placing }) =>
+  setIsPlacing: ({ waypointIndex, type, placing, locationType = "waypoint" }) =>
     set(
       produce<TROute>((state) => {
-        state.isPlacing = { waypointIndex, type, placing };
+        state.isPlacing = { waypointIndex, type, placing, locationType };
       })
     ),
   setRoutes: (data: JeepneyRouteType) =>
@@ -165,22 +180,6 @@ export const useRoute = create<TROute>((set) => ({
     );
   },
 
-  addStop: (type, index) => {
-    set(
-      produce<TROute>((state) => {
-        if (!type || index === undefined) return;
-
-        const routeList = type === "inbound" ? state.inbound : state.outbound;
-        if (!routeList || !routeList[index]) return;
-
-        routeList[index].stops.push({ ...newStop });
-
-        state.selectedStop = routeList[index].stops;
-        state.selectedRouteInfo = { waypointIndex: index, type: type };
-      })
-    );
-  },
-
   setWaypointName: (type, index, name) => {
     set(
       produce<TROute>((state) => {
@@ -230,4 +229,58 @@ export const useRoute = create<TROute>((set) => ({
       })
     );
   },
+
+  addStop: (type, index) => {
+    set(
+      produce<TROute>((state) => {
+        if (!type || index === undefined) return;
+        const routeList = type === "inbound" ? state.inbound : state.outbound;
+
+        if (!routeList) return;
+
+        const waypoint = routeList[index];
+
+        if (!waypoint) return;
+        waypoint.stops.push(newStop);
+        state.selectedStop?.push(newStop);
+      })
+    );
+  },
+
+  setStopData: async (type, index, location, name?) => {
+    if (!location) return;
+
+    const address = name ? await reverseGeocode(location) : null;
+
+    set(
+      produce<TROute>((state) => {
+        // fill later
+      })
+    );
+  },
+
+  setStopName: (type, index, name) => {
+    set(
+      produce<TROute>((state) => {
+        // fill later
+      })
+    );
+  },
+
+  deleteStop: (type, index, stopIndex) =>
+    set(
+      produce<TROute>((state) => {
+        if (!type || index === undefined || stopIndex === undefined) return;
+
+        const routeList = type === "inbound" ? state.inbound : state.outbound;
+        if (!routeList) return;
+
+        const waypoint = routeList[index];
+        if (!waypoint) return;
+
+        const removedStop = waypoint.stops.splice(stopIndex, 1)[0];
+
+        state.selectedStop?.splice(stopIndex, 1);
+      })
+    ),
 }));
